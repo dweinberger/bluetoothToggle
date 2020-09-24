@@ -1,7 +1,7 @@
 # bluetoothToggle
-Toggles the connection of a bluetooth device 
 
-Toggles a device's bluetooth connection on and off, from ta terminal.
+
+Toggles a device's bluetooth connection on and off, from a terminal.
 
 Useful for when you move out of range of your bluetooth mouse and your Mac's trackpad becomes unresponsive, just to give one (not) random example.
 
