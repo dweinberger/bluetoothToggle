@@ -1,0 +1,48 @@
+#!/bin/zsh
+# Toggles a device's bluetooth activity on and off.
+# Useful for when you move out of range of your bluetooth
+#   mouse and your Mac's trackpad becomes unresponsive.
+# Requires installing Blueutil:
+# https://github.com/toy/blueutil/blob/master/README.md
+#
+# I post this as Creative Commons 0, i.e., public domain.
+# David Weinberger, Sept. 24, 2020 david@weinberger.org
+
+
+# Add your device's bluetooth ID here.
+# If you don't know it, run "blueutil --paired"
+# in a terminal window to find out.
+ID="04-4b-ed-d2-96-29" # sample ID
+
+echo "Toggles bluetooth mouse. Requires blueutils be installed.";
+echo "USAGE: bluetoggle. No parameters";
+echo "Device ID: ${ID}"
+echo "--------";
+
+# is the device connected?
+# Run blueutil and returns the text.
+STATUS=`blueutil --paired`
+
+# is the ID mentioned in the status?
+# If not, then it hasn't been connected, so there's
+# nothing for this  script to do
+if [[ $STATUS != *"${ID}"* ]]
+then
+    echo "Mouse not found. Update bluetoggle.sh with mouse's bluetooth ID. Exiting."
+    exit
+fi
+
+# Look for the ID followed by ", not connected"
+if [[ $STATUS == *"${ID}, not"* ]]
+then
+    echo "${ID} is not connected. Connecting..."
+    CL=`blueutil --connect ${ID}` # Create command string
+    NEWSTATUS=`${CL}` # Run the command
+else
+    echo "Disconnecting mouse..."
+    CL=`blueutil --disconnect ${ID}`
+    NEWSTATUS=`${CL}`
+    #echo "Status: $NEWSTATUS"
+fi
+
+exit
